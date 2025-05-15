@@ -7,6 +7,8 @@ import UpdateCoffes from "../Pages/UpdateCoffes";
 import AuthLayout from "../Layouts/AuthLayout";
 import SignUp from "../Pages/SignUp";
 import SignIn from "../Pages/SignIn";
+import Users from "../Components/Users";
+import UserDetails from "../Pages/UserDetails";
 
 const router = createBrowserRouter([
   {
@@ -30,6 +32,17 @@ const router = createBrowserRouter([
         loader: ({ params }) =>
           fetch(`http://localhost:3000/coffees/${params.id}`),
         Component: UpdateCoffes,
+      },
+      {
+        path: "/users",
+        loader: () => fetch("http://localhost:3000/users"),
+        Component: Users,
+      },
+      {
+        path: "/users/:id",
+        loader: ({ params }) =>
+          fetch(`http://localhost:3000/users/${params.id}`),
+        Component: UserDetails,
       },
     ],
   },

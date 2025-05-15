@@ -1,13 +1,31 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router";
+import AuthContext from "../Provider/AuthContext";
 
 const SignUp = () => {
+  const { createUser } = useContext(AuthContext);
   const handleSignUp = (e) => {
     e.preventDefault();
     const form = e.target;
     const formData = new FormData(form);
     const user = Object.fromEntries(formData.entries());
-    console.log(user);
+    const { email, password, ...rest } = user;
+    const newUser = { email, ...rest };
+
+    createUser(email, password)
+      .then((res) => {
+        console.log(res);
+        fetch("http://localhost:3000/users", {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify(newUser),
+        })  
+          .then((res) => res.json())
+          .then((data) => console.log(data));
+      })
+      .catch((err) => console.log(err));
   };
   return (
     <div className="flex items-center justify-center min-h-[calc(100vh-64px)]">
